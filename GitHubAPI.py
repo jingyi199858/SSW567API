@@ -1,7 +1,7 @@
 import json
 import requests
 
-userid = "jingyi199858"
+#userid = "jingyi199858"
 
 repolist = []
 commitslist = []
@@ -28,11 +28,11 @@ resultlist = []
 #that a repo has.
 def githubAPI(userid):
     if userid is None:
-        print("There is no input, please enter github id")
+        return "There is no input, please enter github id"
     if type(userid) != str:
-        print("The input is not string")
+        return "The input is not string"
     response0 = requests.get("https://api.github.com/users/" + userid + "/repos")
-    if(response0 != 200):
+    if(response0.status_code == 200):
         result1 = response0.json()
         #print(result1)
         for i in result1:
@@ -40,16 +40,20 @@ def githubAPI(userid):
         for i in range(len(repolist)):
             #print(repolist[i])
             response1 = requests.get("https://api.github.com/repos/" + userid + "/" + repolist[i] + "/commits")
-            if response1 != 200:
+            if response1.status_code == 200:
                 #print(response1)
                 result2 = response1.json()
                 #print("Repo Name: " + repolist[i] + " Commits number:" + str(len(result2)))
                 resultlist.append("Repo Name: " + repolist[i] + " Commits Number:" + str(len(result2)))
             else:
                 print("Fail to retrieve information, please check status!")
+                return response1.status_code
     else:
         print("Fail to retrieve information, please check status!")
+        return response0.status_code
     return resultlist
+
+
 
 
 
