@@ -1,4 +1,4 @@
-import unittest
+import unittest.mock
 import requests
 
 from GitHubAPI import githubAPI
